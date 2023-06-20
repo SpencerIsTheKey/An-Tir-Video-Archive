@@ -18,9 +18,8 @@ export class Tournament {
     @Column()
     name: string;
 
-    @Column()
-    @IsDateString()
-    date: string;
+    @Column({type: 'timestamp'})
+    date: Date;
 
     @OneToMany(() => Video, (video) => video.tournament, {cascade: true})
     videos: Video[];

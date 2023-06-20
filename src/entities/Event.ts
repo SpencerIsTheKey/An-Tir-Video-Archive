@@ -25,9 +25,11 @@ export class Event {
     @Column()
     location: string;
 
-    @Column()
-    @IsDateString()
-    date: string;
+    @Column({type: 'timestamp'})
+    startDate: Date;
+
+    @Column({type: 'timestamp'})
+    endDate: Date;
 
     @Column()
     host: string;
