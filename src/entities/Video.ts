@@ -17,6 +17,9 @@ export class Video{
     @Column()
     url: string;
 
+    @Column()
+    name: string;
+
     @ManyToOne(() => User, (user) => user.videos, {cascade: true})
     user: User;
 
