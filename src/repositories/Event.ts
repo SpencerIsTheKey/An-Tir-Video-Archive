@@ -1,4 +1,4 @@
-import { Like } from "typeorm";
+import { Between, Like } from "typeorm";
 import { Event } from "../entities/Event";
 import { EventModel } from "../models/Event";
 import { AppDataSource } from "../utils/data-source";
@@ -16,12 +16,36 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
         return temp;
     },
 
-    async findByName(name: string): Promise<Array<EventModel>>{
+    async searchByName(name: string): Promise<Array<EventModel>>{
         const searchstring = '%' + name + '%';
         const searchResult = await this.find({
             where: {name: Like(searchstring)}
         });
 
+        return searchResult;
+    },
+
+    async searchByStartDate(rangeStart: Date, rangeEnd: Date): Promise<Array<EventModel>> {
+        const searchResult = await this.find({
+            where: {
+                startDate: Between(
+                    rangeStart,
+                    rangeEnd
+                ),
+            }
+        });
+        return searchResult;
+    },
+
+    async searchByEndDate(rangeStart: Date, rangeEnd: Date): Promise<Array<EventModel>> {
+        const searchResult = await this.find({
+            where: {
+                endDate: Between(
+                    rangeStart,
+                    rangeEnd
+                ),
+            }
+        });
         return searchResult;
     },
 
@@ -52,7 +76,7 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
     ): Promise<EventModel>{
         adding.forEach(async (elem) => {
             await this.createQueryBuilder()
-                .relation(Event, 'activities')
+                .relation(Event, 'tournaments')
                 .of(event.eventId)
                 .add(elem.tournamentId);
         });
@@ -65,7 +89,7 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
     ): Promise<EventModel>{
         adding.forEach(async (elem) => {
             await this.createQueryBuilder()
-                .relation(Event, 'activities')
+                .relation(Event, 'videos')
                 .of(event.eventId)
                 .add(elem.videoId);
         });
