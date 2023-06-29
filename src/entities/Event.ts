@@ -25,10 +25,10 @@ export class Event {
     @Column()
     location: string;
 
-    @Column({type: 'timestamp'})
+    @Column({type: 'timestamp', default: () => 'NOW()'})
     startDate: Date;
 
-    @Column({type: 'timestamp'})
+    @Column({type: 'timestamp', default: () => 'NOW()'})
     endDate: Date;
 
     @Column()
