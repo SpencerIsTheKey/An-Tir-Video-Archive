@@ -20,15 +20,15 @@ export class Video{
     @Column()
     name: string;
 
-    @ManyToOne(() => User, (user) => user.videos, {cascade: true})
+    @ManyToOne(() => User, (user) => user.videos)
     user: User;
 
-    @ManyToOne(() => Event, (event) => event.videos, {cascade: true})
+    @ManyToOne(() => Event, (event) => event.videos)
     event: Event
 
-    @ManyToOne(() => Activity, (activity) => activity.videos, {cascade: true})
+    @ManyToOne(() => Activity, (activity) => activity.videos)
     activity: Activity;
 
-    @ManyToOne(() => Tournament, (tourament) => tourament.videos, {cascade: true})
+    @ManyToOne(() => Tournament, (tourament) => tourament.videos)
     tournament: Tournament;
 }

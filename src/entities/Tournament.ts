@@ -24,9 +24,9 @@ export class Tournament {
     @OneToMany(() => Video, (video) => video.tournament, {cascade: true})
     videos: Video[];
 
-    @ManyToOne(() => Activity, (activity) => activity.tournaments, {cascade: true})
+    @ManyToOne(() => Activity, (activity) => activity.tournaments)
     type: Activity;
 
-    @ManyToOne(() => Event, (event) => event.tournaments, {cascade: true})
+    @ManyToOne(() => Event, (event) => event.tournaments)
     event: Event;
 }
