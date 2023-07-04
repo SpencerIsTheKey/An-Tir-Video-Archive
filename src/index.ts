@@ -1,7 +1,9 @@
-import { AppDataSource } from "./utils/data-source"
-import { getStartingData } from "./utils/eventScrape"
+import { AppDataSource } from "./utils/data-source";
+import { getStartingData, updateDatabase } from "./utils/eventScrape";
+import * as cron from 'node-cron';
 
 AppDataSource.initialize().then(async () => {
     getStartingData();
-}).catch(error => console.log(error))
+    cron.schedule('0 0 * * 0', () => {updateDatabase()});
+}).catch(error => console.log(error));
 
