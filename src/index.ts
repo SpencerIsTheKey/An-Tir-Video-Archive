@@ -1,5 +1,6 @@
 import { AppDataSource } from "./utils/data-source"
-import { getStartingData } from "./utils/eventScrape"
+import { getStartingData, updateDatabase } from "./utils/eventScrape";
+import * as cron from 'node-cron';
 import { logger } from "./utils/logger";
 import express from 'express';
 
