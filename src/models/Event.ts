@@ -7,8 +7,10 @@ export interface EventModel{
     eventId: number;
     name: string;
     location: string;
-    date: string;
+    startDate: Date;
+    endDate: Date;
     host: string;
+    url: string;
     activities: Activity[];
     tournaments: Tournament[];
     videos: Video[];
@@ -16,7 +18,7 @@ export interface EventModel{
 
 export function toArray(
     event: EventModel
-): Array<number|string|Array<number>>{
+): Array<number|string|Date|Array<number>>{
     const activity_ids: Array<number> = [];
     const tournament_ids: Array<number> = [];
     const video_ids: Array<number> = [];
@@ -37,8 +39,10 @@ export function toArray(
         event.eventId,
         event.name,
         event.location,
-        event.date,
+        event.startDate,
+        event.endDate,
         event.host,
+        event.url,
         activity_ids,
         tournament_ids,
         video_ids

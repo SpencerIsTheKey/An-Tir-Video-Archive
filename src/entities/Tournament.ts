@@ -18,16 +18,15 @@ export class Tournament {
     @Column()
     name: string;
 
-    @Column()
-    @IsDateString()
-    date: string;
+    @Column({type: 'timestamp'})
+    date: Date;
 
     @OneToMany(() => Video, (video) => video.tournament, {cascade: true})
     videos: Video[];
 
-    @ManyToOne(() => Activity, (activity) => activity.tournaments, {cascade: true})
+    @ManyToOne(() => Activity, (activity) => activity.tournaments)
     type: Activity;
 
-    @ManyToOne(() => Event, (event) => event.tournaments, {cascade: true})
+    @ManyToOne(() => Event, (event) => event.tournaments)
     event: Event;
 }

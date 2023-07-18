@@ -5,7 +5,7 @@ import { Video } from "../entities/Video";
 export interface TournamentModel {
     tournamentId: number;
     name: string;
-    date: string;
+    date: Date;
     videos: Video[];
     type: Activity;
     event: Event;
@@ -13,7 +13,7 @@ export interface TournamentModel {
 
 export function toArray(
     tournament: TournamentModel
-): Array<number|string|Array<number>> {
+): Array<number|string|Date|Array<number>> {
     const video_ids: Array<number> = [];
 
     tournament.videos.forEach((video: Video) => {

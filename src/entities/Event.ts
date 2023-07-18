@@ -25,12 +25,17 @@ export class Event {
     @Column()
     location: string;
 
-    @Column()
-    @IsDateString()
-    date: string;
+    @Column({type: 'timestamp', default: () => 'NOW()'})
+    startDate: Date;
+
+    @Column({type: 'timestamp', default: () => 'NOW()'})
+    endDate: Date;
 
     @Column()
     host: string;
+
+    @Column()
+    url: string;
     
     @ManyToMany(() => Activity, {cascade: true})
     @JoinTable()
