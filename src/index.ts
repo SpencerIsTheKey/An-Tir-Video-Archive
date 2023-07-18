@@ -16,7 +16,6 @@ APP.listen(PORT, () => {
 
 AppDataSource.initialize().then(async () => {
     getStartingData();
-}).then(async () => {
-
-}).catch(error => console.log(error))
+    cron.schedule('0 0 * * 0', () => {updateDatabase()});
+}).catch(error => console.log(error));
 

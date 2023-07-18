@@ -10,6 +10,7 @@ export interface EventModel{
     startDate: Date;
     endDate: Date;
     host: string;
+    url: string;
     activities: Activity[];
     tournaments: Tournament[];
     videos: Video[];
@@ -41,6 +42,7 @@ export function toArray(
         event.startDate,
         event.endDate,
         event.host,
+        event.url,
         activity_ids,
         tournament_ids,
         video_ids

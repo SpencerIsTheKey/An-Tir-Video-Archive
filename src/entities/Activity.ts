@@ -25,6 +25,5 @@ export class Activity {
     videos: Video[];
 
     @ManyToMany(() => Event, {cascade: true})
-    @JoinTable()
     events: Event[];
 }
