@@ -33,6 +33,9 @@ export class Event {
 
     @Column()
     host: string;
+
+    @Column()
+    url: string;
     
     @ManyToMany(() => Activity, {cascade: true})
     @JoinTable()

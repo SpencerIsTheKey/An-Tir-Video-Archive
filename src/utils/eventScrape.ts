@@ -116,7 +116,8 @@ function addEvents(): Promise<void> {
                         });
 
                         //get specific location
-                        fetchPage($($row_elem).find('.event-description').attr('href')).then(
+                        create_result.url = $($row_elem).find('.event-description').attr('href');
+                        fetchPage(create_result.url).then(
                             ($event_page) => {
                                 let site_info = $($event_page).find('h3.event-heading').next().next().children().first().text().split('\n');
                                 if(site_info.length == 5){
