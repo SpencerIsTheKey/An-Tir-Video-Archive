@@ -1,12 +1,12 @@
 import axios, { AxiosError } from 'axios';
-import { Event } from '../entities/Event';
+import { Event } from '../db/entities/Event';
 import { activityRepo } from '../repositories/Activity';
-import { Activity } from '../entities/Activity';
+import { Activity } from '../db/entities/Activity';
 import * as cheerio from 'cheerio';
 import { eventRepo } from '../repositories/Event';
 import { arch } from 'os';
 import { ActivityModel } from '../models/Activity';
-import { Tournament } from '../entities/Tournament';
+import { Tournament } from '../db/entities/Tournament';
 import { tournamentRepo } from '../repositories/Tournament';
 import { EventModel } from '../models/Event';
 

@@ -1,10 +1,10 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { User } from "../entities/User"
-import { Activity } from "../entities/Activity";
-import { Event } from "../entities/Event";
-import { Tournament } from "../entities/Tournament";
-import { Video } from "../entities/Video";
+import { User } from "../db/entities/User"
+import { Activity } from "../db/entities/Activity";
+import { Event } from "../db/entities/Event";
+import { Tournament } from "../db/entities/Tournament";
+import { Video } from "../db/entities/Video";
 
 export const AppDataSource = new DataSource({
     type: "mariadb",
