@@ -8,10 +8,10 @@ import { Video } from "../db/entities/Video";
 
 export const AppDataSource = new DataSource({
     type: "mariadb",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    database: "test",
+    host: process.env.HOST,
+    port: parseInt(process.env.DBPORT, 10),
+    username: process.env.MYSQLUSER,
+    database: process.env.DB,
     synchronize: true,
     logging: false,
     entities: [
