@@ -1,7 +1,7 @@
 import { BSONSymbol, Between, Like } from "typeorm";
 import { Tournament } from "../entities/Tournament";
 import { TournamentModel } from "../models/Tournament";
-import { AppDataSource } from "../utils/data-source";
+import { AppDataSource } from "../../utils/data-source";
 import { VideoModel } from "../models/Video";
 import { EventModel } from "../models/Event";
 import { ActivityModel } from "../models/Activity";

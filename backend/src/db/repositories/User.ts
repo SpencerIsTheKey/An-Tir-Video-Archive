@@ -1,7 +1,7 @@
 import { Like } from "typeorm";
 import { User } from "../entities/User";
 import { UserModel } from "../models/User";
-import { AppDataSource } from "../utils/data-source";
+import { AppDataSource } from "../../utils/data-source";
 import { VideoModel } from "../models/Video";
 
 export const userRepo = AppDataSource.getRepository(User).extend({

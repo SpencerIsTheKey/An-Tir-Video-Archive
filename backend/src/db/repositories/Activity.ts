@@ -4,7 +4,7 @@ import { ActivityModel } from "../models/Activity";
 import { EventModel } from "../models/Event";
 import { TournamentModel } from "../models/Tournament";
 import { VideoModel } from "../models/Video";
-import { AppDataSource } from "../utils/data-source";
+import { AppDataSource } from "../../utils/data-source";
 
 export const activityRepo = AppDataSource.getRepository(Activity).extend({
 
