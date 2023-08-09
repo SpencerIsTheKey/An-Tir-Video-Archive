@@ -11,12 +11,21 @@ const PORT = process.env.PORT || 3000;
 // APP.use(bodyParser.json());
 // APP.use(bodyParser.urlencoded({ extended: false }));
 
-APP.listen(PORT, () => {
-  return logger.info('Started server listening on port' + PORT);
-});
+
 
 AppDataSource.initialize().then(async () => {
     getStartingData();
     cron.schedule('0 0 * * 0', () => {updateDatabase()});
+
+    APP.listen(PORT, () => {
+      return logger.info('Started server listening on port' + PORT);
+    });
+    
+    APP.use('/auth', authRouter);
+    APP.use('/activity', activityRouter);
+    APP.use('/event', eventRouter);
+    APP.use('/tournament', tournamentRouter);
+    APP.use('/user', userRouter);
+    APP.use('/video', videoRouter);
 }).catch(error => console.log(error));
 
