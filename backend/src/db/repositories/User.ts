@@ -3,6 +3,7 @@ import { User } from "../entities/User";
 import { UserModel } from "../models/User";
 import { AppDataSource } from "../../utils/data-source";
 import { VideoModel } from "../models/Video";
+import * as bcrypt from 'bcrypt';
 
 export const userRepo = AppDataSource.getRepository(User).extend({
 
@@ -13,6 +14,17 @@ export const userRepo = AppDataSource.getRepository(User).extend({
             return null;
         }
         return temp;
+    },
+
+    async checkUserPass(
+        email: string,
+        password: string
+    ): Promise<boolean> {
+        const foundUser = await this.findOne({
+            where: {email: email}
+        });
+
+        return bcrypt.compareSync(password, foundUser.password);
     },
 
     async findByUsername(username: string): Promise<UserModel[]> {
