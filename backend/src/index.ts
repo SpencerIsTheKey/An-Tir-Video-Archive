@@ -3,6 +3,7 @@ import { getStartingData, updateDatabase } from "./utils/eventScrape";
 import * as cron from 'node-cron';
 import { logger } from "./utils/logger";
 import express from 'express';
+import { authRouter } from "./api/routers/authRoutes";
 
 const KEY = process.env.KEY;
 
