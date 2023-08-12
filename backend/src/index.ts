@@ -23,7 +23,6 @@ AppDataSource.initialize().then(async () => {
     });
     
     APP.use('/auth', authRouter);
-    APP.use('/activity', activityRouter);
     APP.use('/event', eventRouter);
     APP.use('/tournament', tournamentRouter);
     APP.use('/user', userRouter);
