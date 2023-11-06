@@ -1,7 +1,7 @@
 import { Between, Like } from "typeorm";
 import { Event } from "../entities/Event";
 import { EventModel } from "../models/Event";
-import { AppDataSource } from "../utils/data-source";
+import { AppDataSource } from "../../utils/data-source";
 import { ActivityModel } from "../models/Activity";
 import { TournamentModel } from "../models/Tournament";
 import { VideoModel } from "../models/Video";

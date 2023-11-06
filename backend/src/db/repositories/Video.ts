@@ -1,7 +1,7 @@
 import { Like } from "typeorm";
 import { Video } from "../entities/Video";
 import { VideoModel } from "../models/Video";
-import { AppDataSource } from "../utils/data-source";
+import { AppDataSource } from "../../utils/data-source";
 import { UserModel } from "../models/User";
 import { EventModel } from "../models/Event";
 import { TournamentModel } from "../models/Tournament";

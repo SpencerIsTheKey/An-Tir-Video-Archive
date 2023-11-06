@@ -1,7 +1,9 @@
 import { AppDataSource } from "./utils/data-source"
-import { getStartingData } from "./utils/eventScrape"
+import { getStartingData, updateDatabase } from "./utils/eventScrape";
+import * as cron from 'node-cron';
 import { logger } from "./utils/logger";
 import express from 'express';
+import { authRouter } from "./api/routers/authRoutes";
 
 const KEY = process.env.KEY;
 
@@ -10,12 +12,20 @@ const PORT = process.env.PORT || 3000;
 // APP.use(bodyParser.json());
 // APP.use(bodyParser.urlencoded({ extended: false }));
 
-APP.listen(PORT, () => {
-  return logger.info('Started server listening on port' + PORT);
-});
+
 
 AppDataSource.initialize().then(async () => {
     getStartingData();
     cron.schedule('0 0 * * 0', () => {updateDatabase()});
+
+    APP.listen(PORT, () => {
+      return logger.info('Started server listening on port' + PORT);
+    });
+    
+    APP.use('/auth', authRouter);
+    APP.use('/event', eventRouter);
+    APP.use('/tournament', tournamentRouter);
+    APP.use('/user', userRouter);
+    APP.use('/video', videoRouter);
 }).catch(error => console.log(error));
 
