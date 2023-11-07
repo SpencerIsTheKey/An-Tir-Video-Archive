@@ -4,6 +4,7 @@ import * as cron from 'node-cron';
 import { logger } from "./utils/logger";
 import express from 'express';
 import { authRouter } from "./api/routers/authRoutes";
+import { eventRouter } from "./api/routers/eventRoutes";
 
 const KEY = process.env.KEY;
 
@@ -24,8 +25,8 @@ AppDataSource.initialize().then(async () => {
     
     APP.use('/auth', authRouter);
     APP.use('/event', eventRouter);
-    APP.use('/tournament', tournamentRouter);
-    APP.use('/user', userRouter);
-    APP.use('/video', videoRouter);
+    // APP.use('/tournament', tournamentRouter);
+    // APP.use('/user', userRouter);
+    // APP.use('/video', videoRouter);
 }).catch(error => console.log(error));
 
