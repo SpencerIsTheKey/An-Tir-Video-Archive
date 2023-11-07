@@ -1,8 +1,9 @@
+require('dotenv').config()
 import { AppDataSource } from "./utils/data-source"
 import { getStartingData, updateDatabase } from "./utils/eventScrape";
 import * as cron from 'node-cron';
 import { logger } from "./utils/logger";
-import express from 'express';
+import * as express from 'express';
 import { authRouter } from "./api/routers/authRoutes";
 import { eventRouter } from "./api/routers/eventRoutes";
 
@@ -16,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 
 AppDataSource.initialize().then(async () => {
-    getStartingData();
+    await getStartingData();
     cron.schedule('0 0 * * 0', () => {updateDatabase()});
 
     APP.listen(PORT, () => {

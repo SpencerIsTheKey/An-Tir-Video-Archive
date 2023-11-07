@@ -36,7 +36,7 @@ function addActivities(): void {
     activities.forEach(async (activityName) => {
         let activity = new Activity();
         activity.name = activityName;
-        console.log(await activityRepo.createAndSave(activity));
+        await activityRepo.createAndSave(activity);
     });
     return null;
 }
@@ -137,9 +137,12 @@ function addEvents(): Promise<void> {
     return null;
 };
 
-export function getStartingData(): void {
+export async function getStartingData(): Promise<void> {
+    console.log('Initializing database...')
     addActivities();
+    console.log('Retrieving data from https://antir.org/events/ ...');
     addEvents();
+    console.log('Event data retrieved!')
 }
 
 export async function updateDatabase(): Promise<void> {
