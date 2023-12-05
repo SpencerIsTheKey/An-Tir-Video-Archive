@@ -30,6 +30,13 @@ export const activityRepo = AppDataSource.getRepository(Activity).extend({
         return await this.find();
     },
 
+    async getEventActivities(eventId: number): Promise<ActivityModel[]> {
+        return await this
+        .createQueryBuilder('activity')
+        .innerJoin('activity.events', 'event')
+        .where('event.eventId = :id', {id:eventId});
+    },
+
     async isActivity(temp: unknown): Promise<boolean> {
         return (temp instanceof Activity) ? true : false;
     },

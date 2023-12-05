@@ -19,7 +19,9 @@
       "winston": "^3.9.0"
    },
    "scripts": {
+      "init": "ts-node src/utils/init.ts",
       "start": "ts-node src/index.ts",
+      "coldstart": "npm run init && npm run start",
       "typeorm": "typeorm-ts-node-commonjs"
    }
 }

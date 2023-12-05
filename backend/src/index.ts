@@ -17,15 +17,14 @@ const PORT = process.env.PORT || 3000;
 
 
 AppDataSource.initialize().then(async () => {
-    await getStartingData();
     cron.schedule('0 0 * * 0', () => {updateDatabase()});
 
     APP.listen(PORT, () => {
-      return logger.info('Started server listening on port' + PORT);
+      return logger.info('Started server listening on port ' + PORT);
     });
     
     APP.use('/auth', authRouter);
-    APP.use('/event', eventRouter);
+    APP.use('/events', eventRouter);
     // APP.use('/tournament', tournamentRouter);
     // APP.use('/user', userRouter);
     // APP.use('/video', videoRouter);

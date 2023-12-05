@@ -5,6 +5,8 @@ import { AppDataSource } from "../../utils/data-source";
 import { ActivityModel } from "../models/Activity";
 import { TournamentModel } from "../models/Tournament";
 import { VideoModel } from "../models/Video";
+import { logger } from "../../utils/logger";
+import { Activity } from "../entities/Activity";
 
 export const eventRepo = AppDataSource.getRepository(Event).extend({
     async createAndSave(temp: Event): Promise<EventModel|null>{
@@ -13,7 +15,7 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
         } catch {
             return null;
         }
-        return temp;
+        return await this.findOne({where:{eventId:temp.eventId}, relations:{activities:true}});
     },
 
     async searchByName(name: string): Promise<Array<EventModel>>{
@@ -50,7 +52,32 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
     },
 
     async getAll(): Promise<EventModel[]> {
-        return await this.find();
+        return await this.find({
+                relations: {
+                    activities: true
+                }
+            }
+        );
+    },
+
+    async getPage(page: number): Promise<EventModel[]> {
+        logger.info('in');
+        return await this
+            .find({
+                skip: (page-1)*20 ,
+                take: 20,
+                relations: {
+                    activities: true
+                }
+            });
+    },
+
+    async getActivities(eventId: number): Promise<ActivityModel[]> {
+        logger.info(eventId);
+        return await this.
+            createQueryBuilder('activity')
+            .leftJoinAndSelect('events', 'event')
+            .where({'event.eventId': eventId})
     },
 
     async isEvent(temp: unknown): Promise<boolean> {
@@ -67,7 +94,7 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
                 .of(event.eventId)
                 .add(elem.activityId);
         });
-        return await this.findOne({where: {eventId: event.eventId}});
+        return await this.findOne({where:{eventId:event.eventId}, relations:{activities:true}});
     },
 
     async addTournament(

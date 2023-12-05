@@ -1,6 +1,7 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { User } from "../db/entities/User"
+import "reflect-metadata";
+require('dotenv').config();
+import { DataSource } from "typeorm";
+import { User } from "../db/entities/User";
 import { Activity } from "../db/entities/Activity";
 import { Event } from "../db/entities/Event";
 import { Tournament } from "../db/entities/Tournament";
