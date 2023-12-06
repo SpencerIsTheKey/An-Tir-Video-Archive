@@ -9,7 +9,7 @@ export const getPage = async(page: number): Promise<serviceResult<EventModel[]>>
     let response = new serviceResult<EventModel[]>();
     try{
         const allEvents: EventModel[] = await eventRepo.getPage(page);
-        logger.info('200: successfully retrieved events');
+        logger.info(`200: successfully retrieved page ${page} of events`);
         response.isSuccessful = true;
         response.result = allEvents;
         response.status = 200;
