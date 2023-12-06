@@ -61,7 +61,6 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
     },
 
     async getPage(page: number): Promise<EventModel[]> {
-        logger.info('in');
         return await this
             .find({
                 skip: (page-1)*20 ,
@@ -73,11 +72,10 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
     },
 
     async getActivities(eventId: number): Promise<ActivityModel[]> {
-        logger.info(eventId);
         return await this.
             createQueryBuilder('activity')
             .leftJoinAndSelect('events', 'event')
-            .where({'event.eventId': eventId})
+            .where({'eventId': eventId})
     },
 
     async isEvent(temp: unknown): Promise<boolean> {
@@ -89,10 +87,21 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
         adding: ActivityModel[]
     ): Promise<EventModel>{
         adding.forEach(async (elem) => {
-            await this.createQueryBuilder()
+            const currentActivities = await this.getActivities(event.eventId);
+            const jsonElem = JSON.stringify(elem);
+            let activityPresent = false;
+            for(let i = 0; i==currentActivities.length; i++){
+                let jsonCurrentActivity = JSON.stringify(currentActivities[i]);
+                if (jsonElem['activityId'] == jsonCurrentActivity["activityId"]){
+                    activityPresent = true;
+                }
+            }
+            if (!activityPresent){
+                await this.createQueryBuilder()
                 .relation(Event, 'activities')
                 .of(event.eventId)
                 .add(elem.activityId);
+            }
         });
         return await this.findOne({where:{eventId:event.eventId}, relations:{activities:true}});
     },

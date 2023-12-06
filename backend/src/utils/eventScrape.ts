@@ -138,6 +138,9 @@ async function addEvents(): Promise<void> {
                     create_result.url = $($row_elem).find('.event-description').attr('href');
                     let $event_page = await fetchPage(create_result.url);
                     let site_info = $($event_page).find('h3.event-heading').first().next().next().children().first().text().split('\n');
+                    let eventSummary = $($event_page).find('h3.event-heading').first().next().next().children().text();
+                    let eventSchedule = $($event_page).find('div.row').first().next().children().text();
+                    let eventSummaryAndSchedule = `${eventSummary}\n${eventSchedule}`;
 
                     if (site_info.length == 5) {
                         if (site_info[3] == 'Online') {
@@ -159,8 +162,7 @@ async function addEvents(): Promise<void> {
                     }
                     
                     for (const keyword in keyword_array){
-                        logger.info(create_result.name + ", " + keyword + ": "+$event_page.toLowerCase().includes(keyword.toLowerCase()));
-                        if($event_page.toLowerCase().includes(keyword.toLowerCase())){
+                        if(eventSummaryAndSchedule.toLowerCase().includes(keyword.toLowerCase())){
                             let keyword_activity: ActivityModel[] = await activityRepo.findByName(keyword_array[keyword]);
                             create_result = await eventRepo.findOne({where:{eventId:create_result.eventId}, relations:{activities:true}});
 
