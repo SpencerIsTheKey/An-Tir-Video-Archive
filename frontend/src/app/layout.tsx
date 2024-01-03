@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { NextAppDirEmotionCacheProvider} from 'tss-react/next/appDir';
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head></head>
+      <body className={inter.className}>
+        <NextAppDirEmotionCacheProvider options={{key: "css"}}>
+          {children}
+        </NextAppDirEmotionCacheProvider>
+      </body>
     </html>
   )
 }
