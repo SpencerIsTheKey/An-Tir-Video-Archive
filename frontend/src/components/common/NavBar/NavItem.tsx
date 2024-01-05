@@ -21,22 +21,32 @@ const NavItem: FunctionComponent<Props> = ({ text, href, active}) => {
     );
 }
 
-const useStyles = tss.create({
+const useStyles = tss.withParams<{active: boolean}>()
+  .create(({active}) => ({
+    nav_item: {
+        padding: '10px',
+        position: 'relative',
+        fontWeight: active ? 'bold' : 'normal',
+        transition: 'all 0.2s',
 
-      nav_item: {
-        '@media (min-wdith:768px)':{
-           '&:before':{
-            content:'""',
-            position:'absolute',
-            width: '0%',
-            height: '6px',
-            bottom: '-16px',
-            left: 0,
-            backgroundColor: 'black',
-            transition: 'all 0.2s'
-           }
-        }
+        '@media (min-width:768px)':{
+            '&:hover':{
+                '&:before': {
+                    width: '100%'
+                }
+            },
+            '&:before':{
+                content:'""',
+                position:'absolute',
+                width: active ? '100%' : '0%',
+                height: '6px',
+                bottom: '-2px',
+                left: 0,
+                backgroundColor: 'black',
+                transition: 'all 0.2s',
+            }
+            }
       }
-});
+  }));
 
 export default NavItem;
