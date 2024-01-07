@@ -28,10 +28,10 @@ const Footer = () => {
           <Image src={anTirLogo} alt='An Tir Lion' height={175} width={175} />
         </Link>
         <div className={classes.branding_row} >
-          <Link href={'/#about'}>
+          <Link href='/#about' scroll={true}>
             ABOUT
           </Link>
-          <Link href="/$contact">
+          <Link href="/#contact" scroll={true}>
             CONTACT
           </Link>
         </div>
