@@ -1,7 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+const config = require('./env.json')[process.env.ENV];
 
-export const SECRET_KEY: jwt.Secret = process.env.JWT_SECRET;
+export const SECRET_KEY: jwt.Secret = config.APP.JWT_SECRET;
 
 export interface CustomRequest extends Request{
     token: string | jwt.JwtPayload;

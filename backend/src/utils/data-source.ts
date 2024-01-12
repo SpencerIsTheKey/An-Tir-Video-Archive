@@ -1,5 +1,6 @@
 import "reflect-metadata";
 require('dotenv').config();
+const config = require('./env.json')[process.env.ENV];
 import { DataSource } from "typeorm";
 import { User } from "../db/entities/User";
 import { Activity } from "../db/entities/Activity";
@@ -9,10 +10,10 @@ import { Video } from "../db/entities/Video";
 
 export const AppDataSource = new DataSource({
     type: "mariadb",
-    host: process.env.HOST,
-    port: parseInt(process.env.DBPORT, 10),
-    username: process.env.MYSQLUSER,
-    database: process.env.DB,
+    host: config.DB.HOST,
+    port: parseInt(config.DB.DB_PORT, 10),
+    username: config.DB.MYSQLUSER,
+    database: config.DB.DB_NAME,
     synchronize: true,
     logging: false,
     entities: [

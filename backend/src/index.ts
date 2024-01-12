@@ -1,4 +1,5 @@
-require('dotenv').config()
+require('dotenv').config();
+const config = require('./env.json')[process.env.ENV];
 import { AppDataSource } from "./utils/data-source"
 import { getStartingData, updateDatabase } from "./utils/eventScrape";
 import * as cron from 'node-cron';
@@ -10,7 +11,7 @@ import { eventRouter } from "./api/routers/eventRoutes";
 const KEY = process.env.KEY;
 
 const APP = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.APP.PORT || 3333;
 // APP.use(bodyParser.json());
 // APP.use(bodyParser.urlencoded({ extended: false }));
 

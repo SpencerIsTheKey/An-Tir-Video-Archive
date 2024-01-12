@@ -1,3 +1,4 @@
+const config = require('./env.json')[process.env.ENV];
 import { UserModel } from "../../db/models/User";
 import { serviceResult } from "../../utils/service_result";
 import { userRepo } from "../../db/repositories/User";
@@ -12,7 +13,7 @@ const signJWT = (user: UserModel): serviceResult<any> => {
     const payload = {
         email: user.email
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '3 hours'});
+    const token = jwt.sign(payload, config.APP.JWT_SECRET, {expiresIn: '3 hours'});
     response.isSuccessful = true;
     response.result = {user: {email: user.email}, token };
     response.status = 200;
@@ -34,7 +35,7 @@ export const signupService = async(
         response.result = '409: email or username is already in use';
         response.status = 409;
     } else {
-        bcrypt.hash(user.password, parseInt(process.env.SALTROUNDS))
+        bcrypt.hash(user.password, parseInt(config.APP.SALTROUNDS))
             .then( async(hash:string) => {
                 user.password = hash;
                 user = await userRepo.createAndSave(user);
