@@ -1,9 +1,7 @@
 'use client'
 import { Inter } from 'next/font/google'
-import { NextAppDirEmotionCacheProvider} from 'tss-react/next/appDir';
-import './globals.css'
+import '@/styles/globals.css'
 import Head from './head';
-import { GlobalStyles } from 'tss-react';
 import NavBar from '@/components/common/NavBar/NavBar';
 import Footer from '@/components/common/Footer';
 
@@ -18,21 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <Head/>
       <body className={inter.className}>
-        <NextAppDirEmotionCacheProvider options={{key: "css"}}>
-          <GlobalStyles 
-            styles={{
-              "&*":{
-              padding:0,
-                margin: 0,
-                color: 'inherit',
-                textDecoration: 'inherit'
-              },
-            }}
-          />
           <NavBar />
           {children}
           <Footer />
-        </NextAppDirEmotionCacheProvider>
       </body>
     </html>
   )
