@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import styles from "@/styles/Nav.module.scss";
 import { tss } from 'tss-react';
 
 import NavItem from "./NavItem";
@@ -30,17 +31,27 @@ const NavBar = () => {
   return(
     <>
     <header>
-      <nav className={classes.nav_bar_wrapper}>
+      <nav className={styles.nav_bar_wrapper}>
         <Link href="/" onClick={() => setActiveIdx(0)}>
         <Image src={anTirLogo} alt='An Tir Lion' height={75} width={75} />
         </Link>
-        <div onClick={() => {console.log('Clicked open'); setActive((active) => !active)}} className={classes.nav_burger}>
-          <div className={classes.nav_burger_layer}/>
-          <div className={classes.nav_burger_layer}/>
-          <div className={classes.nav_burger_layer}/>
+        <div
+          onClick={() => {setActive((active) => !active)}}
+          className={[
+            styles.nav_burger,
+            active ? styles.active: '']
+            .join(" ")}
+        >
+          <div className={styles.nav_burger_layer}/>
+          <div className={styles.nav_burger_layer}/>
+          <div className={styles.nav_burger_layer}/>
         </div>
-        <div className={classes.nav_link_wrapper}>
-          <div onClick={() => {console.log('Clicked closed'); setActive((active) => !active)}} className={classes.nav_exit}/>
+        <div className={[
+          styles.nav_link_wrapper,
+          active ? styles.active : ''
+          ].join("")}
+        >
+          <div onClick={() => {setActive((active) => !active)}} className={styles.nav_exit}/>
           {MENU_LIST.map((menu, idx) => (
             <div onClick={(e) => {
               setActiveIdx(idx);
@@ -51,7 +62,7 @@ const NavBar = () => {
               <NavItem active={activeIdx === idx} {...menu} />
             </div>
           ))}
-          <Link className={classes.account_btn} href="/account">
+          <Link className={styles.account_btn} href="/account">
             {logged_in ? 'ACCOUNT' : 'LOG IN'}
           </Link>
         </div>

@@ -1,4 +1,3 @@
-'use client'
 import Hero from '@/components/landing_page/hero';
 import NavBar from '../components/common/NavBar/NavBar';
 import AboutSection from '@/components/landing_page/about';

@@ -1,0 +1,38 @@
+.contact_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.contact_left {
+    margin: 5px;
+    padding: 50px;
+    border-radius: 15px;
+    background-color: #FFFFFF;
+  }
+
+.contact_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.socials_wrapper {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.socials_box {
+    border-color: #bfbfbf;
+    background-color: #787878;
+    border-radius: 6px;
+    border: solid;
+    padding: 5px;
+}
