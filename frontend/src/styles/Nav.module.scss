@@ -1,0 +1,126 @@
+.nav_bar_wrapper {
+  display: flex;
+  padding: 16px;
+  margin:0px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #E4BB16;
+}
+
+.nav_burger {
+  display: flex;
+  flex-direction: column;
+  gap:6px;
+  padding:6px;
+  border-style:solid;
+  border-radius:3px;
+  @media (min-width:768px) {
+    display: none;
+  }
+}
+
+.nav_burger.active {
+  display: none;
+}
+
+.nav_burger_layer {
+  width:40px;
+  height: 4px;
+  background-color: black;
+  border-radius: 2px;
+}
+
+.nav_exit {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 3px;
+  background-color: #E4BB16;
+  &:hover {
+    background-color: #b59512;
+  }
+  &:after {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: '\00D7';
+    font-size: 40px;
+    font-weight:300;
+    color: #FFF;
+    text-align: center;
+  }
+  @media (min-width:768px) {
+    display: none;
+  }
+}
+
+.nav_link_wrapper {
+  font-size: 20px;
+  display:flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0px;
+  width:228px;
+  row-gap: 24px;
+  right: -288px;
+  padding: 24px 16px;
+  min-height: calc(100vh - 60px);
+  background-color: #f1f1f1;
+  @media (min-width:768px) {
+    position: unset;
+    flex-direction: row;
+    justify-content: space-between;
+    min-height: fit-content;
+    min-width: fit-content;
+    column-gap: 24px;
+    align-items: center;
+    right: 0px;
+    background-color: #E4BB16;
+  }
+}
+
+.nav_link_wrapper.active{
+  right: 0;
+}
+
+.account_btn {
+  background-color: "#f1f1f1";
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.nav_item {
+  padding: 10px;
+  position: relative;
+  font-weight: normal;
+  transition: all 0.2s;
+
+  @media (min-width:768px) {
+      &:hover {
+          &:before {
+              width: 100%
+          }
+      };
+      &:before {
+          content:"";
+          position:absolute;
+          width: 0%;
+          height: 6px;
+          bottom: -2px;
+          left: 0;
+          background-color: black;
+          transition: all 0.2s;
+      }
+  }
+}
+
+.nav_item.active{
+  font-weight: bold;
+  &:before {
+    width: 100%;
+  }
+}
