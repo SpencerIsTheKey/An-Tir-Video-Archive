@@ -198,8 +198,164 @@ export async function getStartingData(): Promise<void> {
 
 export async function updateDatabase(): Promise<void> {
 
+    try {
+        const events = await eventRepo.getAll();
+        const activities = await activityRepo.getAll();
+
+        const eventsPage: string | undefined = await fetchPage('https://antir.org/events');
+        if (!eventsPage) {
+            return;
+        }
+
+        const $ = cheerio.load(eventsPage);
+        const $event_lists = $('.em-events-list');
+        const $month_headers = $event_lists.find('h2');
+        
+        const promises = [];
+
+        for (let i = 0; i < $month_headers.length; i++) {
+            const $elem = $month_headers[i];
+            // Element order is:
+            //           title, button,      null,       table
+            let $table = $elem.nextSibling.nextSibling.nextSibling;
+            let $tbody = $($table).find('tbody');
+            let $row = $($tbody).find('tr');
+
+            for (let j = 0; j < $row.length; j++) {
+                const $row_elem = $row[j];
+                //don't include cancelled events
+                if ($($row_elem).hasClass('cancelled')) {
+                    continue;
+                }
+                //don't include deadlines
+                if($($row_elem).find('.event-description').text().includes('Deadline')){
+                    continue;
+                }
+
+                let date_array: Array<string> = $($elem).text().split(' ');
+
+                // Scrape 3 years in advance
+                if (parseInt(date_array[date_array.length - 1]) >= (new Date().getFullYear()) + 3) {
+                    continue;
+                }
+
+                var row_event = new Event();
+
+                var days = $($row_elem).find('.event-time').html().replace(/\s+/g, '').split('<br>')[0].split('-');
+                var startDate = new Date(date_array[0] + ' ' + days[0] + ', ' + date_array[1]);
+                var endDate = new Date(date_array[0] + ' ' + days[1] + ', ' + date_array[1]);
+                row_event.startDate = startDate;
+                row_event.endDate = (days.length > 1 ? endDate : startDate);
+
+                row_event.name = $($row_elem).find('.event-description').text();
+
+                let location_data: Array<string> = $($row_elem).find('.event-category-notes').text().split('(');
+                row_event.host = location_data[0];
+                row_event.location = location_data[1] ? location_data[1].split(')')[0] : '';
+
+                row_event.activities.push(activities.filter((activity) => {return activity.name == 'Shenanigans'})[0]);
+
+                // Add declared activities
+                var $activity_div = $($row_elem).find('.event-activities');
+                var $activity_logos = $($activity_div).find('i');
+
+                for (let k = 0; k < $activity_logos.length; k++) {
+                    let $activity_elem = $activity_logos[k];
+                    let logo_title_array = {
+                        'Has Court': 'Court',
+                        'has heavy fighting': 'Heavy',
+                        'has youth activities': 'Youth Combat',
+                        'has rapier and/or cut and thrust fighting': 'Rapier/C&T',
+                        'has archery': 'Archery',
+                        'has thrown weapons': 'Thrown Weapons',
+                        'has bardic activities': 'Bardic',
+                        'has arts and sciences activities': 'A&S'
+                    };
+                    if (logo_title_array.hasOwnProperty($activity_elem.attribs.title)) {
+                        row_event.activities.push(
+                                activities.filter(
+                                    (activity) => {
+                                        return activity.name == logo_title_array[$activity_elem.attribs.title]
+                                    }
+                                )[0]
+                            );
+                    }
+                }
+
+                // Get specific location and check for keywords to add activities
+                row_event.url = $($row_elem).find('.event-description').attr('href');
+                let $event_page = await fetchPage(row_event.url);
+                let site_info = $($event_page).find('h3.event-heading').first().next().next().children().first().text().split('\n');
+                let eventSummary = $($event_page).find('h3.event-heading').first().next().next().children().text();
+                let eventSchedule = $($event_page).find('div.row').first().next().children().text();
+                let eventSummaryAndSchedule = `${eventSummary}\n${eventSchedule}`;
+
+                if (site_info.length == 5) {
+                    if (site_info[3] == 'Online') {
+                        row_event.location = site_info[3];
+                    } else {
+                        row_event.location = `${site_info[site_info.length - 2].trim()} ${site_info[site_info.length - 1].trim()}`;
+                    }
+                }
+                
+                let keyword_array = {
+                    "heavy": "Heavy",
+                    "rapier": "Rapier/C&T",
+                    "cut & thrust": "Rapier/C&T",
+                    'C&T': "Rapier/C&T",
+                    "bardic": "Bardic",
+                    "archery": "Archery",
+                    'class':'A&S'
+                }
+                
+                for (const keyword in keyword_array){
+                    if(eventSummaryAndSchedule.toLowerCase().includes(keyword.toLowerCase())){
+                        if (row_event.activities.length == 0){
+                            row_event.activities.push(
+                                activities.filter((activity) => {return activity.name == keyword_array[keyword]})[0]
+                            );
+                            //if the row_event activites does not already include this activity
+                        } else if (row_event.activities.filter((elem) => elem.name == keyword_array[keyword]).length == 0 ){
+                            row_event.activities.push(
+                                activities.filter((activity) => {return activity.name == keyword_array[keyword]})[0]
+                            );
+                        }
+                    }
+                }
+                //check to see if this event is already in the database
+                let filtered: Array<EventModel> = events.filter((event) => {
+                    if(row_event.name == event.name)
+                        if(row_event.startDate == event.startDate)
+                            if (row_event.location == event.location)
+                                return true;
+                    return false;
+                });
+
+                if(filtered.length == 1) {
+                    //update the event if there are changes
+                    if (JSON.stringify(row_event) !== JSON.stringify(filtered[0])){
+                        row_event.eventId = filtered[0].eventId;
+                        eventRepo.save(row_event);
+                    }
+                } else {
+                    eventRepo.createAndSave(row_event);
+                }
+            }
+        }
+
+        const eventsCreated = await Promise.all(promises);
+        if (eventsCreated){
+            return null;
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+
     const events = await eventRepo.getAll();
     const eventsPage = await fetchPage('https://antir.org/events/');
+
+
+
     
     const $ = cheerio.load(eventsPage);
     const $event_lists = $('.em-events-list');
