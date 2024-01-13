@@ -22,6 +22,7 @@
       "winston": "^3.9.0"
    },
    "scripts": {
+      "check": "ts-node src/utils/check.ts",
       "init": "ts-node src/utils/init.ts",
       "start": "ts-node src/index.ts",
       "coldstart": "npm run init && npm run start",
