@@ -8,12 +8,12 @@ export default function browse() {
 }
 
 export async function getStaticProps() {
-    const res = await fetch(process.env.API_URL + '/events/all');
+    const res = await fetch(`${process.env.API_URL}/events/all`);
     const events = await res.json();
 
     return {
       props: {
         events,
-      },
+      }
     };
 }
