@@ -1,4 +1,4 @@
-const config = require('./env.json')[process.env.ENV];
+const config = require('../../utils/env.json')[process.env.ENV];
 import { UserModel } from "../../db/models/User";
 import { serviceResult } from "../../utils/service_result";
 import { userRepo } from "../../db/repositories/User";

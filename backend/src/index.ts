@@ -1,5 +1,5 @@
 require('dotenv').config();
-const config = require('./env.json')[process.env.ENV];
+const config = require('./utils/env.json')[process.env.ENV];
 import { AppDataSource } from "./utils/data-source"
 import { getStartingData, updateDatabase } from "./utils/eventScrape";
 import * as cron from 'node-cron';
