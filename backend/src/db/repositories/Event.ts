@@ -7,11 +7,13 @@ import { TournamentModel } from "../models/Tournament";
 import { VideoModel } from "../models/Video";
 import { logger } from "../../utils/logger";
 import { Activity } from "../entities/Activity";
+import { revalidateEventsPage } from "../../utils/revalidate";
 
 export const eventRepo = AppDataSource.getRepository(Event).extend({
     async createAndSave(temp: Event): Promise<EventModel|null>{
         try{
             await this.save(temp);
+            revalidateEventsPage();
         } catch {
             return null;
         }
