@@ -21,7 +21,7 @@
   padding:10px;
   backdrop-filter: brightness(175%);
   &:first-child {
-    
+    border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
   };
   &:last-child {
