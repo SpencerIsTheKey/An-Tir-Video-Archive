@@ -54,12 +54,10 @@ export const eventRepo = AppDataSource.getRepository(Event).extend({
     },
 
     async getAll(): Promise<EventModel[]> {
-        return await this.find({
-                relations: {
-                    activities: true
-                }
-            }
-        );
+        return await this.createQueryBuilder("event")
+            .leftJoinAndSelect("event.activities", "activity")
+            .loadRelationCountAndMap('event.videoCount', 'event.videos')
+            .getMany();
     },
 
     async getPage(page: number): Promise<EventModel[]> {
