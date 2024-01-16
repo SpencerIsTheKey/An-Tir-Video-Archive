@@ -97,6 +97,7 @@ async function addEvents(): Promise<void> {
                 let location_data: Array<string> = $($row_elem).find('.event-category-notes').text().split('(');
                 row_event.host = location_data[0];
                 row_event.location = location_data[1] ? location_data[1].split(')')[0] : '';
+                row_event.url = $($row_elem).find('.event-description').attr('href');
 
                 const createResultPromise = await eventRepo.createAndSave(row_event).then(async (create_result) => {
                     // Add activities
@@ -136,7 +137,6 @@ async function addEvents(): Promise<void> {
                     }
         
                     // Get specific location and check for keywords to add activities
-                    create_result.url = $($row_elem).find('.event-description').attr('href');
                     let $event_page = await fetchPage(create_result.url);
                     let site_info = $($event_page).find('h3.event-heading').first().next().next().children().first().text().split('\n');
                     let eventSummary = $($event_page).find('h3.event-heading').first().next().next().children().text();
@@ -253,7 +253,10 @@ export async function updateDatabase(): Promise<void> {
                 let location_data: Array<string> = $($row_elem).find('.event-category-notes').text().split('(');
                 row_event.host = location_data[0];
                 row_event.location = location_data[1] ? location_data[1].split(')')[0] : '';
-
+                row_event.url = $($row_elem).find('.event-description').attr('href');
+                
+                
+                row_event.activities = [];
                 row_event.activities.push(activities.filter((activity) => {return activity.name == 'Shenanigans'})[0]);
 
                 // Add declared activities
