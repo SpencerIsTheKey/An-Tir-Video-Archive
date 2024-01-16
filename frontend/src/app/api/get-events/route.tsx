@@ -1,7 +1,8 @@
 import { revalidatePath } from "next/cache";
+import type { NextRequest, NextResponse} from "next/server";
 
 
-export default async function handler (request: Request){
+export async function POST (request: NextRequest){
   try{
     if (request.headers.get('token') !== process.env.SECRET_TOKEN){
       return Response.json({message: 'Access denied'},{status: 400, statusText: 'Invalid Token'} );
